@@ -8,13 +8,16 @@ import userRoute from "./routes/userRoutes.js";
 const port = process.env.PORT;
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 db();
 // just adding comments
 app.get("/", (req, res) => {
   res.send("app is running");
 });
 
-app.use(userRoute);
+app.use("/api/users", userRoute);
 
 app.use(notFound);
 app.use(errorHandler);

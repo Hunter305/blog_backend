@@ -13,8 +13,8 @@ import express from "express";
 
 const router = express.Router();
 
-router.route("/").post(authUser);
-router.route("/register").post(registerUser);
-router.route("/logout").post(logoutUser);
+router.post("/", authUser);
+router.post("/register", registerUser);
+router.post("/logout", logoutUser);
 
 export default router;
