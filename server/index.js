@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 dotenv.config();
 import db from "./config/db.js";
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
@@ -10,6 +11,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 db();
 // just adding comments

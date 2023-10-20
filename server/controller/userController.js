@@ -1,22 +1,12 @@
 import User from "../model/userModel.js";
 import asyncHandler from "../middleware/asyncHandler.js";
-import jwt from "jsonwebtoken";
+import generateToken from "../utils/generateToken.js";
 
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (user && (await user.matchPassword(password))) {
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "2d",
-    });
-
-    //setting http only cookie
-    res.cookie("jwt", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV !== "development",
-      sameSite: "strict",
-      maxAge: 2 * 24 * 60 * 60 * 1000,
-    });
+    generateToken(res, user._id);
     res.json({
       _id: user._id,
       userName: user.userName,
@@ -31,18 +21,41 @@ const authUser = asyncHandler(async (req, res) => {
 
 const registerUser = asyncHandler(async (req, res) => {
   const { userName, email, password } = req.body;
-  const user = await User.create({ userName, email, password });
+
+  const userExists = await User.findOne({ email });
+
+  if (userExists) {
+    res.status(400);
+    throw new Error("User already exists");
+  }
+
+  const user = await User.create({
+    userName,
+    email,
+    password,
+  });
+
   if (user) {
-    res.json({ userName, email, message: "new user registered" });
+    generateToken(res, user._id);
+
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    });
   } else {
-    res.status(500);
-    throw new Error("internal error");
+    res.status(400);
+    throw new Error("Invalid user data");
   }
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
-  const { userName, email } = req.body;
-  res.json({ userName, email, message: "logout user" });
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+  res.status(200).json({ message: "Logged out successfully" });
 });
 
 const getUserProfile = asyncHandler(async (req, res) => {
