@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import db from "./config/db.js";
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
+import userRoute from "./routes/userRoutes.js";
 
 const port = process.env.PORT;
 const app = express();
@@ -12,6 +13,8 @@ db();
 app.get("/", (req, res) => {
   res.send("app is running");
 });
+
+app.use(userRoute);
 
 app.use(notFound);
 app.use(errorHandler);
