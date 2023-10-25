@@ -58,44 +58,4 @@ const logoutUser = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Logged out successfully" });
 });
 
-const getUserProfile = asyncHandler(async (req, res) => {
-  const { userName, email } = req.body;
-  res.json({ userName, email, message: "get user profile" });
-});
-
-const updateUserProfile = asyncHandler(async (req, res) => {
-  const { userName, email } = req.body;
-  res.json({ userName, email, message: "get user profile" });
-});
-
-const getUsers = asyncHandler(async (req, res) => {
-  const { userName, email } = req.body;
-  res.json({ userName, email, message: "get all users" });
-});
-
-const deleteUser = asyncHandler(async (req, res) => {
-  const { userName, email } = req.body;
-  res.json({ userName, email, message: "delete User" });
-});
-
-const getUserById = asyncHandler(async (req, res) => {
-  const { userName, email } = req.body;
-  res.json({ userName, email, message: "get User by id" });
-});
-
-const updateUser = asyncHandler(async (req, res) => {
-  const { userName, email } = req.body;
-  res.json({ userName, email, message: "updateUser" });
-});
-
-export {
-  authUser,
-  registerUser,
-  logoutUser,
-  getUserProfile,
-  updateUserProfile,
-  getUsers,
-  deleteUser,
-  getUserById,
-  updateUser,
-};
+export { authUser, registerUser, logoutUser };
