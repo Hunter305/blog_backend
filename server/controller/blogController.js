@@ -5,7 +5,7 @@ export const addBlog = async (req, res) => {
     const { blog, image } = req.body;
 
     //Create new blog
-    const blog_ = await Blog.create({ user: req.user._id, blog, image });
+    const blog_ = await Blog.create({ blog, image });
 
     res.json({ success: true, message: "Blog added Successfully" });
   } catch (error) {
