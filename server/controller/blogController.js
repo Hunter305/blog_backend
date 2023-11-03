@@ -2,10 +2,10 @@ import Blog from "../model/blogModel.js";
 
 export const addBlog = async (req, res) => {
   try {
-    const { blog, image } = req.body;
+    const { blog, image, title } = req.body;
 
     //Create new blog
-    const blog_ = await Blog.create({ blog, image });
+    const blog_ = await Blog.create({ blog, image, title });
 
     res.json({ success: true, message: "Blog added Successfully" });
   } catch (error) {
